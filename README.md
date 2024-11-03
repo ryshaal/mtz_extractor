@@ -2,6 +2,7 @@
 # MTZ Extractor
 
 This Python script, named `mtz_extractor.py`, is designed to extract `.mtz` files. It provides functionality to open, read, and process `.mtz` file formats.
+Terminal commands use Indonesian.
 
 ## Features
 
