@@ -4,6 +4,8 @@ import zipfile
 import shutil
 import logging
 import time
+import platform
+import psutil 
 import threading
 import random
 from typing import Set, Optional
@@ -146,30 +148,54 @@ class MTZExtractor:
         """Mengatur logging ke file log"""
         log_folder = Path("logs")
         log_folder.mkdir(exist_ok=True)
+        
+        """Mengatur untuk menampilkan info system dan logging"""
+        logging.basicConfig(level=logging.INFO)
+        logger = logging.getLogger(__name__)
+        
+        """Ambil informasi memori"""
+        memory_info = psutil.virtual_memory()
 
+        """Ambil data tanggal dan mengatur lokasi untuk menyimpan file log"""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        log_file = log_folder / f"extraction_{timestamp}.log"
+        log_file = log_folder / f"compression_{timestamp}.log"
+        
+        """Tentukan extract_folder berdasarkan lokasi file Python dijalankan"""
+        extract_folder = os.path.dirname(os.path.abspath(__file__))  
+        """Gunakan __file__ jika di dalam script"""
+        """Jika di lingkungan interaktif, gunakan os.getcwd()"""
+        """extract_folder = os.getcwd()"""
+        
 
-        # Konfigurasi logger khusus untuk instance ini
         self.logger = logging.getLogger(f'MTZExtractor_{timestamp}')
         self.logger.setLevel(logging.INFO)
-        
-        # Buat file handler dan set formatnya
+
         file_handler = logging.FileHandler(log_file, mode='w', encoding='utf-8')
         file_handler.setLevel(logging.INFO)
-        
-        # Buat formatter
+
         formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
         file_handler.setFormatter(formatter)
         
-        # Tambahkan handler ke logger
+        """Tambahkan handler ke logger"""
         self.logger.addHandler(file_handler)
         
-        # Pastikan log tidak duplikat ke root logger
+        """Pastikan log tidak duplikat ke root logger"""
         self.logger.propagate = False
-        
-        self.logger.info("MTZ Extractor started")
+
+        """Isi file log"""
+        self.logger.info("MTZ Extractor initialized")
+        self.logger.info(f"System Info: {platform.system()} {platform.release()}")
+        self.logger.info(f"CPU Architecture: {platform.machine()}")
+        self.logger.info(f"Process ID: {os.getpid()}")
+        self.logger.info(f"Memory Info: Total={memory_info.total / (1024 ** 3):.2f} GB, "
+            f"Used={memory_info.used / (1024 ** 3):.2f} GB, "
+            f"Available={memory_info.available / (1024 ** 3):.2f} GB, "
+            f"Percentage={memory_info.percent}%")
+        self.logger.info(f"Python Version: {platform.python_version()}")
+        self.logger.info("Timestamp: %s" % datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
         self.logger.info(f"Log file created at: {log_file}")
+        self.logger.info(f"Extracted: {extract_folder}")
+
 
     def print_banner(self):
         """Menampilkan banner aplikasi"""
