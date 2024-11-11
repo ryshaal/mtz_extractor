@@ -16,7 +16,7 @@ This script requires Python 3.x to run. Ensure you have the necessary Python ver
 
 ## Install Dependencies
 
-Proyek ini menggunakan modul-modul built-in Python, namun ada satu modul tambahan `psutil` yang perlu diinstal. Jalankan perintah berikut untuk menginstal dependensi:
+This project uses Python's built-in modules, but there is one additional `psutil` module that needs to be installed. Run the following command to install dependencies:
 
 ```bash
 pip install psutil
