@@ -14,6 +14,14 @@ This repository contains a Python script for extracting .mtz files, specifically
 
 This script requires Python 3.x to run. Ensure you have the necessary Python version installed on your system.
 
+## Install Dependencies
+
+Proyek ini menggunakan modul-modul built-in Python, namun ada satu modul tambahan `psutil` yang perlu diinstal. Jalankan perintah berikut untuk menginstal dependensi:
+
+```bash
+pip install psutil
+```
+
 ## Usage
 
 1. **Clone the repository:**
