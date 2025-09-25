@@ -16,7 +16,7 @@ from datetime import datetime
 
 
 class ColorText:
-    """Class untuk menangani warna text di terminal"""
+    """Class for handling text colors in terminal"""
 
     HEADER = "\033[95m"
     BLUE = "\033[94m"
@@ -54,7 +54,7 @@ class ColorText:
 
 
 class LoadingAnimation:
-    """Class untuk menangani animasi loading di terminal dengan efek smooth"""
+    """Class for handling loading animations in terminal with smooth effects"""
 
     def __init__(self, description: str = "Processing"):
         self.description = description
@@ -88,14 +88,14 @@ class LoadingAnimation:
         self.animation_chars = self.animations["smooth_bar"]
 
     def start(self):
-        """Memulai animasi loading"""
+        """Start loading animation"""
         self.is_running = True
         self.animation_thread = threading.Thread(target=self._animate)
         self.animation_thread.daemon = True
         self.animation_thread.start()
 
     def stop(self):
-        """Menghentikan animasi loading"""
+        """Stop loading animation"""
         self.is_running = False
         if self.animation_thread:
             self.animation_thread.join()
@@ -103,7 +103,7 @@ class LoadingAnimation:
         sys.stdout.flush()
 
     def _animate(self):
-        """Fungsi internal untuk menjalankan animasi dengan efek smooth"""
+        """Internal function to run animation with smooth effects"""
         while self.is_running:
             for frame in self.animation_chars:
                 if not self.is_running:
@@ -116,7 +116,7 @@ class LoadingAnimation:
 
 @contextlib.contextmanager
 def loading_animation(description: str = "Processing"):
-    """Context manager untuk animasi loading"""
+    """Context manager for loading animation"""
     spinner = LoadingAnimation(description)
     spinner.start()
     try:
@@ -126,7 +126,7 @@ def loading_animation(description: str = "Processing"):
 
 
 class MTZExtractor:
-    """Class untuk menangani ekstraksi file MTZ"""
+    """Class for handling MTZ file extraction"""
 
     def __init__(self, allowed_extensions: Set[str] = None):
         self.allowed_extensions = allowed_extensions or {
@@ -145,25 +145,25 @@ class MTZExtractor:
         }
 
     def setup_logging(self) -> None:
-        """Mengatur logging ke file log"""
+        """Set up logging to log file"""
         log_folder = Path("logs")
         log_folder.mkdir(exist_ok=True)
         
-        """Mengatur untuk menampilkan info system dan logging"""
+        """Set up to display system info and logging"""
         logging.basicConfig(level=logging.INFO)
         logger = logging.getLogger(__name__)
         
-        """Ambil informasi memori"""
+        """Get memory information"""
         memory_info = psutil.virtual_memory()
 
-        """Ambil data tanggal dan mengatur lokasi untuk menyimpan file log"""
+        """Get date data and set location to save log file"""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         log_file = log_folder / f"compression_{timestamp}.log"
         
-        """Tentukan extract_folder berdasarkan lokasi file Python dijalankan"""
+        """Determine extract_folder based on Python file execution location"""
         extract_folder = os.path.dirname(os.path.abspath(__file__))  
-        """Gunakan __file__ jika di dalam script"""
-        """Jika di lingkungan interaktif, gunakan os.getcwd()"""
+        """Use __file__ if inside script"""
+        """If in interactive environment, use os.getcwd()"""
         """extract_folder = os.getcwd()"""
         
 
@@ -176,13 +176,13 @@ class MTZExtractor:
         formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
         file_handler.setFormatter(formatter)
         
-        """Tambahkan handler ke logger"""
+        """Add handler to logger"""
         self.logger.addHandler(file_handler)
         
-        """Pastikan log tidak duplikat ke root logger"""
+        """Ensure log doesn't duplicate to root logger"""
         self.logger.propagate = False
 
-        """Isi file log"""
+        """Fill log file"""
         self.logger.info("MTZ Extractor initialized")
         self.logger.info(f"System Info: {platform.system()} {platform.release()}")
         self.logger.info(f"CPU Architecture: {platform.machine()}")
@@ -198,7 +198,7 @@ class MTZExtractor:
 
 
     def print_banner(self):
-        """Menampilkan banner aplikasi"""
+        """Display application banner"""
         banner = f"""
 {ColorText.cyan('╔═════════════════════════════════════════╗')}
 {ColorText.cyan('║')}        {ColorText.bold(' MTZ Extractor v2.0   ')}           {ColorText.cyan('║')}
@@ -208,7 +208,7 @@ class MTZExtractor:
         print(banner)
 
     def format_size(self, size: int) -> str:
-        """Format ukuran file dalam bentuk yang mudah dibaca"""
+        """Format file size in readable format"""
         for unit in ["B", "KB", "MB", "GB"]:
             if size < 1024:
                 return f"{size:.2f} {unit}"
@@ -216,19 +216,19 @@ class MTZExtractor:
         return f"{size:.2f} TB"
 
     def validate_mtz_file(self, file_path: str) -> bool:
-        """Validasi apakah file adalah MTZ"""
+        """Validate if file is MTZ"""
         if not os.path.exists(file_path):
-            print(f"\n{ColorText.red('❌ File tidak ditemukan!')}")
+            print(f"\n{ColorText.red('❌ File not found!')}")
             return False
 
         if not file_path.endswith(".mtz"):
-            print(f"\n{ColorText.red('❌ File bukan format MTZ!')}")
+            print(f"\n{ColorText.red('❌ File is not MTZ format!')}")
             return False
 
         return True
 
     def create_extract_folder(self, file_path: str) -> Optional[str]:
-        """Membuat folder ekstraksi yang unik"""
+        """Create unique extraction folder"""
         try:
             file_name = Path(file_path).stem
             base_extract_folder = Path("./extracted")
@@ -243,36 +243,36 @@ class MTZExtractor:
             return str(extract_folder)
 
         except Exception as e:
-            print(f"\n{ColorText.red(f'❌ Gagal membuat folder: {str(e)}')}")
+            print(f"\n{ColorText.red(f'❌ Failed to create folder: {str(e)}')}")
             return None
 
     def extract_mtz(self, file_path: str, extract_folder: str) -> bool:
-        """Ekstraksi file MTZ ke folder"""
+        """Extract MTZ file to folder"""
         try:
             self.stats["start_time"] = time.time()
             self.stats["total_size"] = os.path.getsize(file_path)
 
             with loading_animation(
-                f"Mengekstrak {ColorText.yellow(os.path.basename(file_path))} ({self.format_size(self.stats['total_size'])})"
+                f"Extracting {ColorText.yellow(os.path.basename(file_path))} ({self.format_size(self.stats['total_size'])})"
             ):
                 with zipfile.ZipFile(file_path, "r") as zip_ref:
                     zip_ref.extractall(extract_folder)
                     self.stats["total_files"] = len(zip_ref.namelist())
             return True
         except Exception as e:
-            print(f"\n{ColorText.red(f'❌ Gagal ekstrak: {str(e)}')}")
+            print(f"\n{ColorText.red(f'❌ Extraction failed: {str(e)}')}")
             return False
 
     def process_files(self, folder: str) -> None:
-        """Proses file setelah diekstrak"""
-        with loading_animation(f"Memproses {ColorText.yellow(os.path.basename(folder))}"):
+        """Process files after extraction"""
+        with loading_animation(f"Processing {ColorText.yellow(os.path.basename(folder))}"):
             self._add_zip_extension_to_files(folder)
             self._unzip_files_to_folders(folder)
             self._cleanup_empty_folders(folder)
             self.stats["extracted_size"] = self.calculate_folder_size(folder)
 
     def calculate_folder_size(self, folder: str) -> int:
-        """Menghitung ukuran total folder"""
+        """Calculate total folder size"""
         total_size = 0
         for dirpath, _, filenames in os.walk(folder):
             for f in filenames:
@@ -281,14 +281,14 @@ class MTZExtractor:
         return total_size
 
     def _add_zip_extension_to_files(self, folder: str) -> None:
-        """Tambahkan ekstensi .zip pada file yang bukan ekstensi yang diizinkan"""
+        """Add .zip extension to files that are not allowed extensions"""
         for file_path in Path(folder).rglob("*"):
             if file_path.is_file() and file_path.suffix not in self.allowed_extensions:
                 new_path = file_path.with_suffix(file_path.suffix + ".zip")
                 file_path.rename(new_path)
 
     def _unzip_files_to_folders(self, folder: str) -> None:
-        """Ekstraksi file .zip ke folder masing-masing"""
+        """Extract .zip files to their respective folders"""
         for file_path in Path(folder).rglob("*.zip"):
             if file_path.is_file():
                 folder_path = file_path.with_suffix("")
@@ -302,7 +302,7 @@ class MTZExtractor:
                     continue
 
     def _cleanup_empty_folders(self, folder: str) -> None:
-        """Hapus folder kosong"""
+        """Remove empty folders"""
         for dirpath, dirnames, filenames in os.walk(folder, topdown=False):
             if not dirnames and not filenames:
                 try:
@@ -311,7 +311,7 @@ class MTZExtractor:
                     continue
 
     def show_completion(self, extract_folder: str):
-        """Menampilkan pesan selesai dengan statistik"""
+        """Display completion message with statistics"""
         os.system("cls" if os.name == "nt" else "clear")
         completion_time = time.time() - self.stats["start_time"]
         expansion_ratio = (
@@ -320,29 +320,29 @@ class MTZExtractor:
             else 0
         )
 
-        print(f"\n{ColorText.green('✨ Ekstraksi Berhasil! ✨')}")
-        print(f"\n{ColorText.cyan('📊 Statistik Ekstraksi:')}")
-        print(f"├─ Total file: {ColorText.yellow(str(self.stats['total_files']))}")
+        print(f"\n{ColorText.green('✨ Extraction Successful! ✨')}")
+        print(f"\n{ColorText.cyan('📊 Extraction Statistics:')}")
+        print(f"├─ Total files: {ColorText.yellow(str(self.stats['total_files']))}")
         print(
-            f"├─ Ukuran awal: {ColorText.yellow(self.format_size(self.stats['total_size']))}"
+            f"├─ Original size: {ColorText.yellow(self.format_size(self.stats['total_size']))}"
         )
         print(
-            f"├─ Ukuran akhir: {ColorText.yellow(self.format_size(self.stats['extracted_size']))}"
+            f"├─ Final size: {ColorText.yellow(self.format_size(self.stats['extracted_size']))}"
         )
-        print(f"├─ Rasio ekspansi: {ColorText.yellow(f'{expansion_ratio:.1f}%')}")
-        print(f"├─ Waktu proses: {ColorText.yellow(f'{completion_time:.1f} detik')}")
-        print(f"└─ Lokasi: {ColorText.yellow(extract_folder)}\n")
+        print(f"├─ Expansion ratio: {ColorText.yellow(f'{expansion_ratio:.1f}%')}")
+        print(f"├─ Processing time: {ColorText.yellow(f'{completion_time:.1f} seconds')}")
+        print(f"└─ Location: {ColorText.yellow(extract_folder)}\n")
 
 
 def get_user_input() -> str:
-    """Fungsi untuk mendapatkan input dari user"""
+    """Function to get input from user"""
     return input(
-        f"{ColorText.cyan('📂')} Masukkan lokasi file MTZ: "
+        f"{ColorText.cyan('📂')} Enter MTZ file location: "
     ).strip()
 
 
 def main():
-    """Fungsi utama"""
+    """Main function"""
     os.system("cls" if os.name == "nt" else "clear")
     extractor = MTZExtractor()
     extractor.print_banner()
@@ -357,7 +357,7 @@ def main():
         if not extract_folder:
             sys.exit(1)
 
-        print(f"\n{ColorText.cyan('⏳')} Memulai proses ekstraksi...\n")
+        print(f"\n{ColorText.cyan('⏳')} Starting extraction process...\n")
 
         if not extractor.extract_mtz(file_path, extract_folder):
             sys.exit(1)
@@ -367,7 +367,7 @@ def main():
 
     except KeyboardInterrupt:
         os.system("cls" if os.name == "nt" else "clear")
-        print(f"\n{ColorText.yellow('⚠️ Dibatalkan!')}\n")
+        print(f"\n{ColorText.yellow('⚠️ Cancelled!')}\n")
         sys.exit(0)
     except Exception as e:
         print(f"\n{ColorText.red('❌ Error:')} {str(e)}\n")
