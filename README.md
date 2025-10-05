@@ -1,8 +1,14 @@
 
 # MTZ Extractor
 
-This Python script, named `mtz_extractor.py`, is designed to extract `.mtz` files. It provides functionality to open, read, and process `.mtz` file formats.
-This repository contains a Python script for extracting .mtz files, specifically designed for Xiaomi MIUI themes. The script enables easy access to the contents of .mtz theme files, making it convenient for customization and theme modification. Terminal commands use Indonesian.
+This repository contains a Python script for extracting `.mtz` files, specifically designed for Xiaomi MIUI themes.  
+The script allows easy access to the contents of `.mtz` theme files, making theme customization and modification much simpler.
+
+In addition, a desktop application version is also available — a Python-based app for extracting, compressing, and managing MIUI theme files (`.mtz`).  
+It is built using **CustomTkinter**, featuring a modern graphical interface with **drag-and-drop** support.
+
+[![Download](https://img.shields.io/badge/Download%20MTZ_Extractor-v2.0-blue?style=for-the-badge&logo=windows)](https://github.com/ryshaal/mtz_extractor/releases/download/v2.0/MTZ_Extractor.exe)
+
 
 ## Features
 
