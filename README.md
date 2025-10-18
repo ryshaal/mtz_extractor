@@ -53,10 +53,6 @@ python mtz_extractor.py example.mtz
 
 This command will extract `example.mtz` and display the contents as per the script's implementation.
 
-## Donate
-[![Buy Me a Coffee](https://storage.ko-fi.com/cdn/generated/fhfuc7slzawvi/2025-10-18_rest-4e5476e63e058ce643e50c2a2f579efc-ie0cvj4n.jpg)](https://ko-fi.com/riyhsal)
-
-
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
