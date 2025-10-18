@@ -9,6 +9,12 @@ It is built using **CustomTkinter**, featuring a modern graphical interface with
 
 [![Download](https://img.shields.io/badge/Download%20MTZ_Extractor-v2.0-blue?style=for-the-badge&logo=windows)](https://github.com/ryshaal/mtz_extractor/releases/download/v2.0/MTZ_Extractor.exe)
 
+<a href="https://ko-fi.com/riyhsal">
+  <img src="https://ryshaal.github.io/assets/img/doante.svg" width="182" alt="Donate">
+</a>
+
+
+
 
 ## Features
 
